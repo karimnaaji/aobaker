@@ -105,6 +105,8 @@ void atlas_dump(
     const Atlas_Output_Mesh * atlas_mesh,
     const Atlas_Input_Mesh * object_mesh,
     const char* oobjmesh,
+    const char* omtl,
+    const char* oatlas,
     bool gbuffer,
     float** pcoordsdata,
     float** pnormsdata,

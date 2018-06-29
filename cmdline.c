@@ -6,6 +6,7 @@ int main(int argc, const char **argv)
 {
     char const* outmesh = "result.obj";
     char const* atlas = "result.png";
+    char const* mtl = "result.mtl";
     int sizehint = 32;
     int nsamples = 128;
     bool gbuffer = false;
@@ -14,6 +15,7 @@ int main(int argc, const char **argv)
     flag_usage("[options] input_mesh.obj");
     flag_string(&outmesh, "outmesh", "OBJ file to produce");
     flag_string(&atlas, "atlas", "PNG file to produce");
+    flag_string(&mtl, "material", "MTL file to produce");
     flag_int(&sizehint, "sizehint", "Controls resolution of atlas");
     flag_int(&nsamples, "nsamples", "Quality of ambient occlusion");
     flag_bool(&gbuffer, "gbuffer", "Generate diagnostic images");
@@ -21,6 +23,6 @@ int main(int argc, const char **argv)
     flag_float(&multiply, "multiply", "Scales the AO values be a constant");
     flag_parse(argc, argv, "v" AOBAKER_VERSION, 1);
     char const* inmesh = flagset_singleton()->argv[0];
-    return aobaker_bake(inmesh, outmesh, atlas, sizehint, nsamples, gbuffer,
+    return aobaker_bake(inmesh, outmesh, mtl, atlas, sizehint, nsamples, gbuffer,
         chartinfo, multiply);
 }

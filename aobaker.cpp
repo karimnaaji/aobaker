@@ -19,6 +19,7 @@ static Atlas_Input_Mesh* obj_mesh_load(const char* filename);
 int aobaker_bake(
     char const* inputmesh,
     char const* outputmesh,
+    char const* outputmtl,
     char const* outputatlas,
     int sizehint,
     int nsamples,
@@ -53,7 +54,7 @@ int aobaker_bake(
     float* normsdata = 0;
     uint8_t* chartids = 0;
     int size[2];
-    atlas_dump(output_mesh, obj_mesh, outputmesh, gbuffer, &coordsdata,
+    atlas_dump(output_mesh, obj_mesh, outputmesh, outputmtl, outputatlas, gbuffer, &coordsdata,
         &normsdata, chartinfo ? (&chartids) : 0, size);
 
     // Free meshes.

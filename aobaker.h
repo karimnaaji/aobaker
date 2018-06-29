@@ -12,6 +12,7 @@ int aobaker_bake(
     char const* inputmesh,   // suzanne.obj
     char const* outputmesh,  // result.obj
     char const* outputatlas, // result.png
+    char const* outputmtl,   // result.mtl
     int sizehint,            // 32
     int nsamples,            // 128
     bool gbuffer,            // false

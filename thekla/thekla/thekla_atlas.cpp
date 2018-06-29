@@ -349,6 +349,8 @@ void Thekla::atlas_dump(
     const Atlas_Output_Mesh * atlas_mesh,
     const Atlas_Input_Mesh * obj_mesh,
     const char* oobjmesh,
+    const char* omtl,
+    const char* oatlas,
     bool gbuffer,
     float** pcoordsdata,
     float** pnormsdata,
@@ -360,6 +362,8 @@ void Thekla::atlas_dump(
     FILE* outobj = fopen(oobjmesh, "wt");
     float uscale = 1.f / atlas_mesh->atlas_width;
     float vscale = 1.f / atlas_mesh->atlas_height;
+    fprintf(outobj, "mtllib %s\n", omtl);
+    fprintf(outobj, "usemtl ao_mtl\n\n");
     Vector3 minp(FLT_MAX);
     Vector3 maxp(FLT_MIN);
     for (int nvert = 0; nvert < atlas_mesh->vertex_count; nvert++) {
@@ -381,6 +385,14 @@ void Thekla::atlas_dump(
         fprintf(outobj, "f %d/%d %d/%d %d/%d\n", a, a, b, b, c, c);
     }
     fclose(outobj);
+    FILE* outmtl = fopen(omtl, "wt");
+    fprintf(outmtl, "newmtl ao_mtl\n");
+    fprintf(outmtl, "Ka 0.0000 0.0000 0.0000\n");
+    fprintf(outmtl, "Kd 1.0000 1.0000 1.0000\n");
+    fprintf(outmtl, "Ks 0.0000 0.0000 0.0000\n");
+    fprintf(outmtl, "d 1.0\n");
+    fprintf(outmtl, "map_Kd %s\n", oatlas);
+    fclose(outmtl);
 
     // Create an image representing the charts, with color representing the
     // approximate world-space position of each source vertex.
