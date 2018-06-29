@@ -3,23 +3,19 @@ project(aobaker)
 
 if(APPLE)
     exec_program(brew
-        ARGS "info embree | tr ' ' '\n' | grep Cellar"
-        OUTPUT_VARIABLE EMBREE_PATH)
-
-    exec_program(brew
         ARGS "info tbb | tr ' ' '\n' | grep Cellar"
         OUTPUT_VARIABLE TBB_PATH)
 else()
     # TODO: Find packages
-    set(EMBREE_PATH "/usr/local" CACHE PATH "Embree location")
     set(TBB_PATH "/usr" CACHE PATH "Threading Building Blocks location")
 endif()
 
-message(EMBREE_PATH = ${EMBREE_PATH})
 message(TBB_PATH = ${TBB_PATH})
 
 add_subdirectory(thekla)
 add_subdirectory(vendor/poshlib)
+
+include(vendor/embree-2.17.3/build/embree-config.cmake)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -std=c++11")
@@ -29,14 +25,15 @@ else()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
 endif()
 
+message(${EMBREE_INCLUDE_DIRS})
+
 add_definitions(
     -O3
-    -I${EMBREE_PATH}/include
+    -I${EMBREE_INCLUDE_DIRS}
     -I${TBB_PATH}/include
     -Wall)
 
 link_directories(
-    ${EMBREE_PATH}/lib
     ${TBB_PATH}/lib)
 
 include_directories(
@@ -54,5 +51,5 @@ add_executable(
 target_link_libraries(
     aobaker
     thekla_atlas
-    embree
+    ${EMBREE_LIBRARY}
     tbb)
